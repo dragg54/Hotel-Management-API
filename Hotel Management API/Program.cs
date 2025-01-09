@@ -18,6 +18,7 @@ using Microsoft.Extensions.Options;
 using FluentValidation.AspNetCore;
 using Hotel_Management_API.DTOs.Requests;
 using Hotel_Management_API.DTOs.Validators;
+using Hotel_Management_API.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -164,6 +165,12 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IOwnerService, OwnerService>();
 builder.Services.AddScoped<IHotelService, HotelService>();
+builder.Services.AddScoped<IRoomService, RoomService>();
+
+//Inject repositories
+builder.Services.AddScoped<IOwnerRepository, OwnerRepository>();
+builder.Services.AddScoped<IRoomRepository, RoomRepository>();
+builder.Services.AddScoped<IHotelRepository, HotelRepository>();
 
 var app = builder.Build();
 

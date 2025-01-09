@@ -23,8 +23,9 @@ namespace Hotel_Management_API.Models
 
         public string City { get; set; }
 
-        [ForeignKey("OwnerId")]
         public long OwnerId;
+
+        public string Country {get; set;}
 
         public string State { get; set; }
 

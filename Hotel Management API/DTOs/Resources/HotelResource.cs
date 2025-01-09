@@ -12,7 +12,7 @@ namespace Hotel_Management_API.DTOs.Resources
 
         public long Id { get; set; }
 
-        public OwnerData Owner { get; set; }
+        public long OwnerId { get; set; }
 
         public string Name { get; set; }
 

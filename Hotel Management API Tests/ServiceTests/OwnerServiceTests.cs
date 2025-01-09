@@ -9,6 +9,7 @@ using Hotel_Management_API.DTOs.Requests;
 using Hotel_Management_API.DTOs.Resources;
 using Hotel_Management_API.Entities;
 using Hotel_Management_API.Exceptions;
+using Hotel_Management_API.Repositories;
 using Hotel_Management_API.Services;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -23,6 +24,7 @@ namespace Hotel_Management_API_Tests.ServiceTests
         private PutOwnerRequest putOwnerRequest;
         private OwnerService ownerService;
         private HotelDBContext hotelDBContext;
+        private IOwnerRepository ownerRepository;
 
         [SetUp]
         public void Setup()
@@ -33,7 +35,8 @@ namespace Hotel_Management_API_Tests.ServiceTests
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
             hotelDBContext = new HotelDBContext(options);
-            ownerService = new OwnerService(hotelDBContext);
+            ownerRepository = new OwnerRepository(hotelDBContext);
+            ownerService = new OwnerService(ownerRepository);
         }
 
         [Test]

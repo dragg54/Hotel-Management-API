@@ -12,6 +12,7 @@ namespace Hotel_Management_API.Entities
     {
         [Key]
         public long Id { get; set; }
+        public long HotelId { get; set; }
         public int Capacity{get;set;}
         public string Number{get;set;}
         public decimal PricePerNight {get;set;}

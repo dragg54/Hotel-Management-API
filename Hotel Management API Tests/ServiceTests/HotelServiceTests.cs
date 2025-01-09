@@ -8,6 +8,7 @@ using Hotel_Management_API.DTOs.Resources;
 using Hotel_Management_API.Entities;
 using Hotel_Management_API.Exceptions;
 using Hotel_Management_API.Models;
+using Hotel_Management_API.Repositories;
 using Hotel_Management_API.Services;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
@@ -19,9 +20,10 @@ namespace Hotel_Management_API_Tests.ServiceTests
     {
         private PostHotelRequest postHotelRequest;
         private PutHotelRequest putHotelRequest;
-        private HotelService HotelService;
+        private HotelService hotelService;
         private HotelDBContext hotelDBContext;
-        private OwnerService ownerService;
+        private IHotelRepository hotelRepository;
+        private IOwnerRepository ownerRepository;
 
         [SetUp]
         public void Setup()
@@ -32,8 +34,9 @@ namespace Hotel_Management_API_Tests.ServiceTests
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
             hotelDBContext = new HotelDBContext(options);
-            ownerService = new OwnerService(hotelDBContext);
-            HotelService = new HotelService(hotelDBContext, ownerService);
+            hotelRepository = new HotelRepository(hotelDBContext);
+            ownerRepository = new OwnerRepository(hotelDBContext);
+            hotelService = new HotelService(ownerRepository, hotelRepository);
         }
 
         [Test]
@@ -50,7 +53,7 @@ namespace Hotel_Management_API_Tests.ServiceTests
             await hotelDBContext.AddAsync(existingOwner);
             await hotelDBContext.SaveChangesAsync();
             //Act
-            var result = await HotelService.ProcessPostHotelRequest(postHotelRequest);
+            var result = await hotelService.ProcessPostHotelRequest(postHotelRequest);
 
             //Assert
             Assert.IsNotNull(result);
@@ -84,7 +87,7 @@ namespace Hotel_Management_API_Tests.ServiceTests
 
             //Act
             //Assert
-            Assert.ThrowsAsync<DuplicateRequestException>(async () => await HotelService.ProcessPostHotelRequest(postHotelRequest));
+            Assert.ThrowsAsync<DuplicateRequestException>(async () => await hotelService.ProcessPostHotelRequest(postHotelRequest));
         }
 
         [Test]
@@ -101,7 +104,7 @@ namespace Hotel_Management_API_Tests.ServiceTests
             await hotelDBContext.AddAsync(existingOwner);
             //Act
             //Assert
-            Assert.ThrowsAsync<BadRequestException>(async () => await HotelService.ProcessPutHotelRequest(putHotelRequest, 5L));
+            Assert.ThrowsAsync<BadRequestException>(async () => await hotelService.ProcessPutHotelRequest(putHotelRequest, 5L));
         }
 
         [Test]
@@ -118,7 +121,7 @@ namespace Hotel_Management_API_Tests.ServiceTests
             await hotelDBContext.SaveChangesAsync();
 
             //Act
-            var result = await HotelService.ProcessPutHotelRequest(putHotelRequest, existingHotel.Id);
+            var result = await hotelService.ProcessPutHotelRequest(putHotelRequest, existingHotel.Id);
 
             //Assert
             Assert.IsNotNull(result);
@@ -138,7 +141,7 @@ namespace Hotel_Management_API_Tests.ServiceTests
             await hotelDBContext.SaveChangesAsync();
 
             //Act
-            var result = await HotelService.GetHotelAsync(existingHotel.Id);
+            var result = await hotelService.GetHotelAsync(existingHotel.Id);
 
             //Assert
             Assert.IsNotNull(result);
@@ -149,7 +152,7 @@ namespace Hotel_Management_API_Tests.ServiceTests
         public async Task Given_An_NonExisting_Hotel_When_GetHotel_With_The_Id_Is_Invoked_On_The_Service_Then_Should_Throw_Not_Found_Exception()
         {
             //Assert
-            Assert.ThrowsAsync<NotFoundException>(async () => await HotelService.GetHotelAsync(1L));
+            Assert.ThrowsAsync<NotFoundException>(async () => await hotelService.GetHotelAsync(1L));
         }
     }
 }

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Hotel_Management_API.Exceptions
 {
-    public class BadRequestException: Exception
+    public class BadRequestException : Exception
     {
-         public BadRequestException()
+        public BadRequestException()
         {
         }
 

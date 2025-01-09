@@ -23,13 +23,7 @@ namespace Hotel_Management_API.DTOs.Extensions
                 Id = hotel.Id,
                 Name = hotel.Name,
                 Address = hotel.Address,
-                Owner = new OwnerData
-                {
-                    OwnerId = hotel.Owner.Id,
-                    FirstName = hotel.Owner.FirstName,
-                    LastName = hotel.Owner.LastName,
-                    Email = hotel.Owner.Email,  
-                },
+                OwnerId = hotel.Owner.Id,
                 StarRating = hotel.StarRating,
                 State = hotel.State,
                 City = hotel.City,
@@ -44,25 +38,19 @@ namespace Hotel_Management_API.DTOs.Extensions
             return new HotelResource
             {
                 Id = hotel.Id,
+                OwnerId = hotel.Owner.Id,
                 Name = hotel.Name,
                 Address = hotel.Address,
                 StarRating = hotel.StarRating,
                 State = hotel.State,
                 City = hotel.City,
-                Owner = new OwnerData
-                {
-                    OwnerId = hotel.Owner?.Id,
-                    FirstName = hotel.Owner.FirstName,
-                    LastName = hotel.Owner.LastName,
-                    Email = hotel.Owner.Email
-                },
                 PostalCode = hotel.PostalCode,
                 CreatedAt = hotel.CreatedAt,
                 UpdatedAt = hotel.UpdatedAt,
             };
         }
 
-        public static Hotel ToHotel(this PostHotelRequest request, Owner owner)
+        public static Hotel ToHotel(this PostHotelRequest request)
         {
             Hotel hotel = new Hotel
             {
@@ -73,30 +61,38 @@ namespace Hotel_Management_API.DTOs.Extensions
                 State = request.State,
                 City = request.City,
                 PostalCode = request.PostalCode,
-                OwnerId = owner.Id,
-                Owner = owner
+                OwnerId = request.OwnerId,
             };
             return hotel;
         }
 
-        public static HotelResource ToHotelResource(this PutHotelRequest request, long id, Owner owner)
+         public static Hotel ToHotel(this PutHotelRequest request)
         {
-            return new HotelResource
+            Hotel hotel = new Hotel
             {
-                Id = id,
+
                 Name = request.Name,
                 Address = request.Address,
                 StarRating = request.StarRating,
                 State = request.State,
                 City = request.City,
                 PostalCode = request.PostalCode,
-                Owner = new OwnerData
-                {
-                    OwnerId = owner.Id,
-                    FirstName = owner.FirstName,
-                    LastName = owner.LastName,
-                    Email = owner.Email
-                }
+            };
+            return hotel;
+        }
+
+        public static HotelResource ToHotelResource(this PutHotelRequest request, long id, Hotel hotel)
+        {
+            return new HotelResource
+            {
+                Id = id,
+                OwnerId = hotel.Owner.Id,
+                Name = request.Name,
+                Address = request.Address,
+                StarRating = request.StarRating,
+                State = request.State,
+                City = request.City,
+                PostalCode = request.PostalCode,
             };
         }
 
@@ -105,10 +101,25 @@ namespace Hotel_Management_API.DTOs.Extensions
             hotel.Name = request.Name;
             hotel.Address = request.Address;
             hotel.StarRating = request.StarRating;
-            hotel.State = request.State;    
-            hotel.City = request.City;  
+            hotel.State = request.State;
+            hotel.City = request.City;
             hotel.PostalCode = request.PostalCode;
             hotel.UpdatedAt = DateTime.Now;
+        }
+
+        public static Hotel ToHotel(this HotelResource resource)
+        {
+            return new Hotel
+            {
+                
+                OwnerId = resource.OwnerId,
+                Name = resource.Name,
+                Address = resource.Address,
+                StarRating = resource.StarRating,
+                State = resource.State,
+                City = resource.City,
+                PostalCode = resource.PostalCode,
+            };
         }
     }
 }

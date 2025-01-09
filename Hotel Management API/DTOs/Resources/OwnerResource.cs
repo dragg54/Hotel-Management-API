@@ -15,8 +15,6 @@ namespace Hotel_Management_API.DTOs.Resources
 
         public string Email { get; set; }
 
-        public ICollection<Hotel> Hotels { get; set; }  
-
         public string Phone { get; set; }
 
         public DateTime CreatedAt { get; set; } 
