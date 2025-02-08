@@ -7,7 +7,7 @@ using Hotel_Management_API.DTOs.Requests;
 
 namespace Hotel_Management_API.DTOs.Validators
 {
-    public class PutHotelRequestValidator: AbstractValidator<PutHotelRequest>
+    public class PutHotelRequestValidator : AbstractValidator<PutHotelRequest>
     {
         public PutHotelRequestValidator()
         {

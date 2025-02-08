@@ -17,7 +17,6 @@ namespace Hotel_Management_API.Entities
         public string Number{get;set;}
         public decimal PricePerNight {get;set;}
         public RoomType RoomClass {get;set;}
-
         public Hotel Hotel {get;set;}
         public ICollection<Booking> Bookings {get;set;}
     }

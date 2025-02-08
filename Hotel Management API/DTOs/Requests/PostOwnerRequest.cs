@@ -7,6 +7,7 @@ namespace Hotel_Management_API.DTOs.Requests
 {
     public class PostOwnerRequest
     {
+        public long Id { get; }
         public string FirstName { get; set; }
 
         public string LastName { get; set; }

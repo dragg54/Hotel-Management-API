@@ -66,10 +66,11 @@ namespace Hotel_Management_API.DTOs.Extensions
             };
         }
 
-         public static RoomResource ToRoomResource(this PostRoomRequest request)
+         public static RoomResource ToRoomResource(this PostRoomRequest request, long Id)
         {
             return new RoomResource
             {
+                Id = Id,
                 HotelId = request.HotelId,
                 Capacity = request.Capacity,
                 Number = request.Number,

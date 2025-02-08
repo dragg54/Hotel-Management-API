@@ -18,7 +18,6 @@ namespace Hotel_Management_API.DTOs.Extensions
                 Email = owner.Email,
                 FirstName = owner.FirstName,
                 LastName = owner.LastName,
-                Hotels = owner.Hotels,
                 CreatedAt = owner.CreatedAt,
                 UpdatedAt = owner.UpdatedAt,
             }).ToList();
@@ -32,7 +31,6 @@ namespace Hotel_Management_API.DTOs.Extensions
                 Email = owner.Email,
                 FirstName = owner.FirstName,
                 LastName = owner.LastName,
-                Hotels = owner.Hotels,
                 CreatedAt = owner.CreatedAt,
                 UpdatedAt = owner.UpdatedAt,
             };
@@ -42,6 +40,7 @@ namespace Hotel_Management_API.DTOs.Extensions
         {
             return new Owner
             {
+                Id = request.Id,
                 Email = request.Email,
                 FirstName = request.FirstName,
                 LastName = request.LastName,

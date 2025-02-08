@@ -37,10 +37,10 @@ namespace Hotel_Management_API.Services
             return newHotel.ToHotelResource();
         }
 
-        public async Task<List<HotelResource>> GetHotelsAsync()
+        public async Task<(int, List<HotelResource>)> GetHotelsAsync(int pageSize, int pageNumber)
         {
-            var hotels = await hotelRepository.GetAllHotelsAsync();
-            return hotels.ToHotelResources();
+            var hotels = await hotelRepository.GetAllHotelsAsync(pageSize, pageNumber);
+            return (hotels.TotalPages, hotels.ToList().ToHotelResources());
         }
 
         public async Task<HotelResource> ProcessPutHotelRequest(PutHotelRequest request, long id)

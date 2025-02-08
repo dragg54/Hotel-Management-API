@@ -7,6 +7,7 @@ namespace Hotel_Management_API.DTOs.Requests
 {
     public class PostRoomRequest
     {
+        public long Id { get;}    
         public long HotelId { get; set; }
         public int Capacity { get; set; }
         public string Number { get; set; }

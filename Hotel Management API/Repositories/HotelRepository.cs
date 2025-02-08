@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Hotel_Management_API.Data.DBContexts;
+using Hotel_Management_API.DTOs.Resources;
 using Hotel_Management_API.Models;
 using Hotel_Management_API.Repositories.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -23,9 +24,11 @@ namespace Hotel_Management_API.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<List<Hotel>> GetAllHotelsAsync()
+        public async Task<PaginatedList<Hotel>> GetAllHotelsAsync(int pageSize, int pageNumber = 1)
         {
-            return await _dbContext.Hotels.ToListAsync();
+            var hotels = _dbContext.Hotels;
+            var paginatedResult = await PaginatedList<Hotel>.CreateAsync(hotels.AsNoTracking(), pageNumber, pageSize);
+            return paginatedResult;
         }
 
         public async Task<Hotel> GetHotelAsync(long hotelId)

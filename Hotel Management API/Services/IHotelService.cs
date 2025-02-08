@@ -10,7 +10,7 @@ namespace Hotel_Management_API.Services
     public interface IHotelService
     {
         Task<HotelResource> ProcessPostHotelRequest(PostHotelRequest request);
-        Task<List<HotelResource>> GetHotelsAsync();
+        Task<(int count, List<HotelResource> data)> GetHotelsAsync(int pageSize, int pageNumber);
         Task<HotelResource> ProcessPutHotelRequest(PutHotelRequest request, long id);
         Task<HotelResource> GetHotelAsync(long id);
     }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Hotel_Management_API.DTOs.Requests;
 using Hotel_Management_API.DTOs.Resources;
+using Microsoft.AspNetCore.Identity;
 
 namespace Hotel_Management_API.Services
 {
@@ -11,6 +12,7 @@ namespace Hotel_Management_API.Services
     {
         Task<AuthResource> ProcessPostUserRequest(PostUserRequest request);
         Task<AuthResource> ProcessLoginRequest(LoginUserRequest request);
-        Task<UserResource> GetUserResourceAsync(string userId); 
+        Task<UserResource> GetUserResourceAsync(string userId);
+        Task<IdentityUser> GetLoggedInUserAsync();
     }
 }

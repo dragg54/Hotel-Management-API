@@ -23,7 +23,7 @@ namespace Hotel_Management_API.Models
 
         public string City { get; set; }
 
-        public long OwnerId;
+        public long OwnerId { get; set; }
 
         public string Country {get; set;}
 

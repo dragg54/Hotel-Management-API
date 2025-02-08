@@ -9,7 +9,7 @@ namespace Hotel_Management_API.Entities
     public class Booking : BaseEntity
     {
         public long Id { get; set; }
-        public long UserId { get; set; }
+        public string UserId { get; set; }
         public long RoomId { get; set; } 
         public BookingStatus Status {get;set;}
         public DateTime CheckInDate { get; set; }

@@ -9,6 +9,7 @@ namespace Hotel_Management_API.Responses
     public interface IResponseHandler
     {
         IActionResult Success<T>(T data, string message = null);
+        IActionResult PagedResponse<T>(T data, int Count, int pageSize, string message = null);
         IActionResult NotFound(string message);
         IActionResult Success(string message = null);
         IActionResult BadRequest(string message);

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Hotel_Management_API.DTOs.Extensions;
 using Hotel_Management_API.DTOs.Requests;
 using Hotel_Management_API.DTOs.Resources;
+using Hotel_Management_API.Entities;
 using Hotel_Management_API.Exceptions;
 using Hotel_Management_API.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,7 @@ namespace Hotel_Management_API.Services
     {
          private readonly IRoomRepository _roomRepository;
          private readonly IHotelRepository _hotelRepository;
-        public RoomService(IRoomRepository roomRepository, HotelRepository hotelRepository)
+        public RoomService(IRoomRepository roomRepository, IHotelRepository hotelRepository)
         {
             _roomRepository = roomRepository;
             _hotelRepository = hotelRepository;
@@ -37,9 +38,10 @@ namespace Hotel_Management_API.Services
         {
             var existingHotel = await _hotelRepository.GetHotelAsync(request.HotelId)
                               ?? throw new BadRequestException("Failed to create hotel: Hotel must exist before a room can be added");
-            
-            await _roomRepository.CreateRoomAsync(request.ToRoom());
-            return request.ToRoomResource();
+
+            Room room = request.ToRoom();
+            await _roomRepository.CreateRoomAsync(room);
+            return request.ToRoomResource(room.Id);
         }
 
         public async Task<RoomResource> ProcessPutRoomRequest(long id, PutRoomRequest request)

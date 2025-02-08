@@ -19,6 +19,21 @@ namespace Hotel_Management_API.Responses
             });
         }
 
+        public IActionResult PagedResponse<T>(T data, int count, int pageSize, string message = null)
+        {
+            return new OkObjectResult(
+                new
+                {
+                    StatusCode = StatusCodes.Status200OK,
+                    Succeeded = true,
+                    Message = message,
+                    Data = data,
+                    Count = count,
+                    PageSize = pageSize,
+                });
+        }
+
+
         public IActionResult NotFound(string message)
         {
             return new NotFoundObjectResult(new

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Hotel_Management_API.Data.DBContexts;
 using Hotel_Management_API.DTOs.Extensions;
@@ -20,12 +21,15 @@ namespace Hotel_Management_API.Services
         private readonly UserManager<User> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly ITokenService tokenService;
-        public UserService(HotelDBContext dBContext, UserManager<User> userManager, ITokenService tokenService, RoleManager<IdentityRole> roleManager)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public UserService(HotelDBContext dBContext, UserManager<User> userManager, ITokenService tokenService, RoleManager<IdentityRole> roleManager, IHttpContextAccessor httpContextAccessor)
         {
             this.dbContext = dBContext;
             this.userManager = userManager;
             this.tokenService = tokenService;
             this.roleManager = roleManager;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<UserResource> GetUserResourceAsync(string userId)
@@ -93,6 +97,12 @@ namespace Hotel_Management_API.Services
                 IsAuthenticated = true,
                 ExpiresOn = tokenService.GetTokenExpirationTime(jwtSecurityToken)
             };
+        }
+
+        public async Task<IdentityUser> GetLoggedInUserAsync()
+        {
+            var userId = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return await userManager.FindByIdAsync(userId);
         }
     }
 }

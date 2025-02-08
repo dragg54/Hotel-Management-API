@@ -23,7 +23,7 @@ namespace Hotel_Management_API.DTOs.Extensions
                 Id = hotel.Id,
                 Name = hotel.Name,
                 Address = hotel.Address,
-                OwnerId = hotel.Owner.Id,
+                OwnerId = hotel.OwnerId,
                 StarRating = hotel.StarRating,
                 State = hotel.State,
                 City = hotel.City,
@@ -54,7 +54,7 @@ namespace Hotel_Management_API.DTOs.Extensions
         {
             Hotel hotel = new Hotel
             {
-
+                Id = request.Id,
                 Name = request.Name,
                 Address = request.Address,
                 StarRating = request.StarRating,
@@ -70,7 +70,6 @@ namespace Hotel_Management_API.DTOs.Extensions
         {
             Hotel hotel = new Hotel
             {
-
                 Name = request.Name,
                 Address = request.Address,
                 StarRating = request.StarRating,

@@ -159,6 +159,12 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+//Inject repositories
+builder.Services.AddScoped<IOwnerRepository, OwnerRepository>();
+builder.Services.AddScoped<IRoomRepository, RoomRepository>();
+builder.Services.AddScoped<IHotelRepository, HotelRepository>();
+builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+
 //Inject services    
 builder.Services.AddScoped<IResponseHandler, ResponseHandler>();
 builder.Services.AddScoped<IUserService, UserService>();
@@ -166,11 +172,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IOwnerService, OwnerService>();
 builder.Services.AddScoped<IHotelService, HotelService>();
 builder.Services.AddScoped<IRoomService, RoomService>();
-
-//Inject repositories
-builder.Services.AddScoped<IOwnerRepository, OwnerRepository>();
-builder.Services.AddScoped<IRoomRepository, RoomRepository>();
-builder.Services.AddScoped<IHotelRepository, HotelRepository>();
+builder.Services.AddScoped<IBookingService, BookingService>();
 
 var app = builder.Build();
 
