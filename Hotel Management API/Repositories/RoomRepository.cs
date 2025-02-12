@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Hotel_Management_API.Data.DBContexts;
+using Hotel_Management_API.DTOs.Resources;
 using Hotel_Management_API.Entities;
 using Hotel_Management_API.Models;
 using Hotel_Management_API.Repositories.Extensions;
+using Hotel_Management_API.Repositories.Queries;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hotel_Management_API.Repositories
@@ -24,9 +26,27 @@ namespace Hotel_Management_API.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<List<Room>> GetAllRoomsAsync()
+        public async Task<PaginatedList<Room>> GetAllRoomsAsync(RoomSearchQuery query, int pageSize, int pageNumber = 1)
         {
-            return await _dbContext.Rooms.ToListAsync();
+            IQueryable<Room> rooms = _dbContext.Rooms;
+            if (query.Capacity != 0)
+            {
+                rooms = rooms.Where(room => room.Capacity == query.Capacity);
+            }
+            if (query.RoomClass != null)
+            {
+                rooms = rooms.Where(room => room.RoomClass.ToString() == query.RoomClass);
+            }
+            if (query.Number != null)
+            {
+                rooms = rooms.Where(room => EF.Functions.Like(room.Number, query.Number));
+            }
+            if(query.BookingStatus != null)
+            {
+                rooms = rooms.Where(room => (room.Bookings.LastOrDefault().Status.ToString()) == query.BookingStatus);
+             }
+            var paginateRoom = await PaginatedList<Room>.CreateAsync(rooms.AsNoTracking(), pageNumber, pageSize);
+            return paginateRoom;
         }
 
         public async Task<Room> GetRoomAsync(long RoomId)

@@ -49,7 +49,7 @@ namespace Hotel_Management_API.Controllers
         public async Task<IActionResult> GetBookings([FromQuery] PaginationQuery query)
         {
             var result = await bookingService.GetBookingResourcesAsync(query.pageSize, query.pageNumber);
-            return responseHandler.Success(result);
+            return responseHandler.PagedResponse(result.Item2, result.Item1, query.pageSize, "Success");
         }
 
         [HttpGet("{id}")]

@@ -10,6 +10,7 @@ using Hotel_Management_API.Entities;
 using Hotel_Management_API.Exceptions;
 using Hotel_Management_API.Models;
 using Hotel_Management_API.Repositories;
+using Hotel_Management_API.Repositories.Queries;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hotel_Management_API.Services
@@ -37,9 +38,9 @@ namespace Hotel_Management_API.Services
             return newHotel.ToHotelResource();
         }
 
-        public async Task<(int, List<HotelResource>)> GetHotelsAsync(int pageSize, int pageNumber)
+        public async Task<(int, List<HotelResource>)> GetHotelsAsync(HotelSearchQuery query, int pageSize, int pageNumber)
         {
-            var hotels = await hotelRepository.GetAllHotelsAsync(pageSize, pageNumber);
+            var hotels = await hotelRepository.GetAllHotelsAsync(query, pageSize, pageNumber);
             return (hotels.TotalPages, hotels.ToList().ToHotelResources());
         }
 

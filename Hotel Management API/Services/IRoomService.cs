@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Hotel_Management_API.DTOs.Requests;
 using Hotel_Management_API.DTOs.Resources;
+using Hotel_Management_API.Repositories.Queries;
 
 namespace Hotel_Management_API.Services
 {
@@ -12,6 +13,6 @@ namespace Hotel_Management_API.Services
         Task<RoomResource> ProcessPostRoomRequest(PostRoomRequest request);
         Task<RoomResource> ProcessPutRoomRequest(long id, PutRoomRequest request); 
         Task<RoomResource> GetRoomAsync(long id);
-        Task<List<RoomResource>> GetRoomsAsync();  
+        Task<(int, List<RoomResource>)> GetRoomsAsync(RoomSearchQuery query, int pageSize, int pageNumber);  
     }
 }

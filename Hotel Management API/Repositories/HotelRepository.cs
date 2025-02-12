@@ -6,6 +6,7 @@ using Hotel_Management_API.Data.DBContexts;
 using Hotel_Management_API.DTOs.Resources;
 using Hotel_Management_API.Models;
 using Hotel_Management_API.Repositories.Extensions;
+using Hotel_Management_API.Repositories.Queries;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hotel_Management_API.Repositories
@@ -24,9 +25,21 @@ namespace Hotel_Management_API.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<PaginatedList<Hotel>> GetAllHotelsAsync(int pageSize, int pageNumber = 1)
+        public async Task<PaginatedList<Hotel>> GetAllHotelsAsync(HotelSearchQuery query, int pageSize, int pageNumber = 1)
         {
-            var hotels = _dbContext.Hotels;
+            IQueryable<Hotel> hotels = _dbContext.Hotels;
+            if(query.Name != null)
+            {
+                hotels = hotels.Where(hotel => hotel.Name == query.Name);
+            }
+            if (query.City != null)
+            {
+                hotels = hotels.Where(hotel => hotel.City == query.City);
+            }
+            if(query.Address != null)
+            {
+                hotels = hotels.Where(hotel => EF.Functions.Like(hotel.Address, query.Address));
+            }
             var paginatedResult = await PaginatedList<Hotel>.CreateAsync(hotels.AsNoTracking(), pageNumber, pageSize);
             return paginatedResult;
         }

@@ -6,6 +6,7 @@ using Hotel_Management_API.DTOs.Queries;
 using Hotel_Management_API.DTOs.Requests;
 using Hotel_Management_API.DTOs.Resources;
 using Hotel_Management_API.Models;
+using Hotel_Management_API.Repositories.Queries;
 using Hotel_Management_API.Responses;
 using Hotel_Management_API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -48,10 +49,10 @@ namespace Hotel_Management_API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(HotelResource))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetHotels([FromQuery] PaginationQuery query)
+        public async Task<IActionResult> GetHotels([FromQuery] PaginationQuery paginationQuery, [FromQuery] HotelSearchQuery hotelSearchQuery)
         {
-            var result = await _hotelService.GetHotelsAsync(query.pageSize, query.pageNumber);
-            return _responseHandler.PagedResponse(result.Item2, result.Item1, query.pageSize, "Success");
+            var result = await _hotelService.GetHotelsAsync(hotelSearchQuery, paginationQuery.pageSize, paginationQuery.pageNumber);
+            return _responseHandler.PagedResponse(result.Item2, result.Item1, paginationQuery.pageSize, "Success");
         }
 
         [HttpGet("{id}")]
